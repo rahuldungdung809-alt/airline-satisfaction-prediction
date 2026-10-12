@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airline Satisfaction Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="brand">Airline Insights</div>
+        <span class="tagline">Passenger Experience Predictor</span>
+    </header>
+
+    <main class="container">
+        <section class="intro">
+            <p class="eyebrow">PASSENGER EXPERIENCE</p>
+            <h1>Airline Satisfaction Predictor</h1>
+            <p>
+                Enter passenger details and service ratings to estimate
+                whether the passenger is likely to be satisfied.
+            </p>
+        </section>
+
+        {% if prediction %}
+        <section class="result">
+            <h2>Prediction Result</h2>
+            <p class="result-label">{{ prediction }}</p>
+            <p>Estimated satisfaction probability: <strong>{{ probability }}</strong></p>
+            <p class="disclaimer">
+                This is a machine-learning estimate, not a guarantee of passenger sentiment.
+            </p>
+        </section>
+        {% endif %}
+
+        {% if error %}
+        <section class="error">
+            {{ error }}
+        </section>
+        {% endif %}
+
+        <form action="/predict" method="POST">
+            <section class="form-section">
+                <h2>Passenger Information</h2>
+
+                <div class="form-grid">
+                    <label>Gender
+                        <select name="Gender" required>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </label>
+
+                    <label>Customer Type
+                        <select name="Customer Type" required>
+                            <option value="Loyal Customer">Loyal Customer</option>
+                            <option value="disloyal Customer">Disloyal Customer</option>
+                        </select>
+                    </label>
+
+                    <label>Age
+                        <input type="number" name="Age" min="1" max="110" required>
+                    </label>
+
+                    <label>Type of Travel
+                        <select name="Type of Travel" required>
+                            <option value="Business travel">Business Travel</option>
+                            <option value="Personal Travel">Personal Travel</option>
+                        </select>
+                    </label>
+
+                    <label>Travel Class
+                        <select name="Class" required>
+                            <option value="Business">Business</option>
+                            <option value="Eco">Economy</option>
+                            <option value="Eco Plus">Economy Plus</option>
+                        </select>
+                    </label>
+
+                    <label>Flight Distance
+                        <input type="number" name="Flight Distance" min="0" max="10000" required>
+                    </label>
+                </div>
+            </section>
+
+            <section class="form-section">
+                <h2>Service Ratings</h2>
+                <p class="hint">Choose a rating from 0 to 5 for each service.</p>
+
+                <div class="form-grid">
+                    {% set ratings = [
+                        ("Inflight wifi service", "Inflight Wi-Fi"),
+                        ("Departure/Arrival time convenient", "Departure / Arrival Convenience"),
+                        ("Ease of Online booking", "Online Booking"),
+                        ("Gate location", "Gate Location"),
+                        ("Food and drink", "Food and Drink"),
+                        ("Online boarding", "Online Boarding"),
+                        ("Seat comfort", "Seat Comfort"),
+                        ("Inflight entertainment", "Inflight Entertainment"),
+                        ("On-board service", "On-board Service"),
+                        ("Leg room service", "Legroom"),
+                        ("Baggage handling", "Baggage Handling"),
+                        ("Checkin service", "Check-in Service"),
+                        ("Inflight service", "Inflight Service"),
+                        ("Cleanliness", "Cleanliness")
+                    ] %}
+
+                    {% for field, label in ratings %}
+                    <label>{{ label }}
+                        <select name="{{ field }}" required>
+                            {% for value in range(0, 6) %}
+                            <option value="{{ value }}" {% if value == 3 %}selected{% endif %}>
+                                {{ value }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </label>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section class="form-section">
+                <h2>Flight Delays</h2>
+
+                <div class="form-grid">
+                    <label>Departure Delay (minutes)
+                        <input type="number" name="Departure Delay in Minutes"
+                               min="0" step="any" value="0" required>
+                    </label>
+
+                    <label>Arrival Delay (minutes)
+                        <input type="number" name="Arrival Delay in Minutes"
+                               min="0" step="any" placeholder="Leave blank if unknown">
+                    </label>
+                </div>
+            </section>
+
+            <button class="submit-button" type="submit">
+                Predict Satisfaction
+            </button>
+        </form>
+
+        <footer>
+            Built with Python, Flask, CatBoost and LightGBM.
+        </footer>
+    </main>
+</body>
+</html>

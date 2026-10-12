@@ -1,0 +1,40 @@
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Environment variables and secrets
+.env
+.env.*
+
+# IDE files
+.vscode/
+.idea/
+
+# Logs
+*.log
+lightgbm_info.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Kaggle datasets - do not upload large datasets
+notebook/data/
+
+# Generated prediction files
+notebook/*submission*.csv
+notebook/*predictions*.csv
+notebook/*blend*.csv
+
+# Temporary model training files
+catboost_info/
