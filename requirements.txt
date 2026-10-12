@@ -1,9 +1,8 @@
-
-flask
-pandas
-numpy
-scikit-learn
-catboost
-lightgbm
+flask==3.1.2
+pandas==2.3.3
+numpy==2.3.5
+scikit-learn==1.7.2
+catboost==1.2.10
+lightgbm==4.7.0
 joblib
 gunicorn
